@@ -29,10 +29,10 @@ while (!answered){
 //     console.log(getComputerChoice());
 // }
 
-function playRound(){
+function playRound(string){
     let compChoice = getComputerChoice();
-    let playerMove = playerSelection();
-    alert(`You used ${playerMove} and the computer used ${compChoice}`)
+    let playerMove = string;
+    compAlert.textContent= `You used ${playerMove} and the computer used ${compChoice}`
     if (playerMove == "rock"){
         if (compChoice == "rock"){
             return "tie";
@@ -62,32 +62,65 @@ function playRound(){
     }
 }
 
-function game(rounds){
-let score = 0;
-let compScore = 0;
-    for (i = 0; i < rounds; i++){
-        let result = playRound();
-        switch (result){
-            case "win": alert(`you won round number ${i+1}!`);
-            score++;
-            break;
-            case "lose": alert(`you lost round number ${i+1}`);
-            compScore++;
-            break;
-            case "tie": alert(`you tied round number ${i+1}`);
-            break;
+// function game(rounds){
+// let score = 0;
+// let compScore = 0;
+//     for (i = 0; i < rounds; i++){
+//         let result = playRound();
+//         switch (result){
+//             case "win": alert(`you won round number ${i+1}!`);
+//             score++;
+//             break;
+//             case "lose": alert(`you lost round number ${i+1}`);
+//             compScore++;
+//             break;
+//             case "tie": alert(`you tied round number ${i+1}`);
+//             break;
+//         }
+//     }
+//     let message = "";
+//     if (score < compScore){
+//         message = "sorry -- you lost.";
+//     } else if (score > compScore){
+//         message = "congratulations, you won!"
+//     } else {
+//         message = "it's a tie game!";
+//     }
+//     return `your final score was ${score} - ${compScore}. ${message}`;
+// }
+
+const buttons = document.querySelectorAll(".buttons");
+
+const score = document.querySelector("#score");
+const compScore =document.querySelector("#compScore");
+const compAlert = document.querySelector("#alert");
+
+let countUser=0;
+let countComp=0;
+
+buttons.forEach(btn => btn.addEventListener('click', e => {
+    let result = playRound(e.target.id);
+    scoreCounter(result);
+}));
+
+function scoreCounter(string){
+    if (string === "win"){
+        score.textContent = ++countUser;
+    } else if (string === "lose"){
+        compScore.textContent = ++countComp;
+    }
+    if (countComp == 5 || countUser == 5){
+        document.querySelector("#rock").disabled = true;
+        document.querySelector("#paper").disabled = true;
+        document.querySelector("#scissors").disabled = true;
+        if (countComp == 5){
+            compAlert.textContent = "the computer has won";
+        } else {
+            compAlert.textContent = "you have beat the computer!";
         }
     }
-    let message = "";
-    if (score < compScore){
-        message = "sorry -- you lost.";
-    } else if (score > compScore){
-        message = "congratulations, you won!"
-    } else {
-        message = "it's a tie game!";
-    }
-    return `your final score was ${score} - ${compScore}. ${message}`;
+    
 }
-alert(game(1));
+
 
 
